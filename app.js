@@ -37,5 +37,8 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
-
+const port = 8000;
+app.listen(port, () => {
+console.log("running in " + port);
+});
 module.exports = app;
