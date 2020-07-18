@@ -32,5 +32,19 @@ router.get("/user", (req, res) => {
      res.status(200).json(docs);
     });
 });
+router.patch("/user", (req, res) => {
+    if (req.query.id == null) {
+        res.status(300).json({
+        msn: "Error no existe id"
+    });
+    return;
+    }
+    var id = req.query.id;
+    var params = req.body;
+    USER.findOneAndUpdate({_id: id}, params, (err, docs) => {
+        res.status(200).json(docs);
+    });
+});
+
     
 module.exports = router;
