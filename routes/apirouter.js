@@ -45,6 +45,16 @@ router.patch("/user", (req, res) => {
         res.status(200).json(docs);
     });
 });
+router.delete("/user", async(req, res) => {
+    if (req.query.id == null) {
+    res.status(300).json({
+     msn: "Error no existe id"
+    });
+    return;
+    }
+    var r = await USER.remove({_id: req.query.id});
+    res.status(300).json(r);
+    });
 
     
 module.exports = router;
