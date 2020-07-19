@@ -1,10 +1,29 @@
 var express = require('express');
 var router = express.Router();
 var USER=require("../database/user");
+var valid = require('../utils/valid');
+
+
 router.post('/user', async(req, res) => {
 var params = req.body;
 params["registerdate"] = new Date();
-var users = new USER(params);
+
+if (!valid.checkParams(USER.schema, params)){
+    res.status(300).json({mns:"error al ingresar los datos"});
+    return;
+}
+//pass valid
+if (!valid.checkPassword(params.password)){
+    res.status(300).json({mns:"el pasword debe tener mas de 6 caracteres empesar con mayuscula y tener almenos un caracter especial y un numero"});
+    return;
+}
+//email valid
+if (!valid.checkEmail(params.email)){
+    res.status(300).json({mns:"ingrese un email valido"});
+    return;
+}
+
+var users = new USER.model(params);
 var result = await users.save();
 res.status(200).json(result);
 });
