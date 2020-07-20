@@ -54,7 +54,7 @@ router.get("/user", (req, res) => {
 router.patch("/user", (req, res) => {
     if (req.query.id == null) {
         res.status(300).json({
-        msn: "Error no existe id"
+        msn: "no existe id"
     });
     return;
     }
@@ -67,7 +67,7 @@ router.patch("/user", (req, res) => {
 router.delete("/user", async(req, res) => {
     if (req.query.id == null) {
     res.status(300).json({
-     msn: "Error no existe id"
+     msn: "no existe id"
     });
     return;
     }
