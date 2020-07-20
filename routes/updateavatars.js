@@ -44,6 +44,21 @@ router.post("/sendfile", (req, res)=>{
         res.status(200).json({name: img.name});    
     });
 });
-
+router.get("/getfile", async(req, res, next)=>{
+    var params=req.query;
+    if(params==null){
+        res.status(300).json({msn: "error es necesario una ID"});
+        return;
+    }
+    var idimg = params.id ;
+    var imagen=await IMAGE.find({_id: idimg});
+    if(imagen.length>0){
+        var path=imagen[0].pathfile;
+        res.sendFile(path);
+        return;
+    }
+    res.status(300).json({msn: "error en la peticion"});
+    return;
+});
 
 module.exports=router;
