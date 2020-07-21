@@ -13,8 +13,11 @@
     "express": "~4.16.0",
     "express-fileupload": "^1.1.7-alpha.4",
     "express-upload": "^0.1.0",
+    "find": "^0.3.0",
     "http-errors": "~1.6.2",
     "jade": "~1.11.0",
+    "jsonwebtoken": "^8.5.1",
+    "map": "^1.0.1",
     "mongoose": "^5.9.25",
     "morgan": "~1.9.0",
     "sha1": "^1.1.1"
