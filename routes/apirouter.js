@@ -7,30 +7,31 @@ var valid = require('../utils/valid');
 
 
 var midleware=require("./midleware");
+//registro de nuevos usuarios
 router.post('/user', async(req, res) => {
-var params = req.body;
-params["registerdate"] = new Date();
+    var params = req.body;
+    params["registerdate"] = new Date();
 
-console.log(params);
-if (!valid.checkParams(USER.schema, params)){
-    res.status(300).json({mns:"error al ingresar los datos"});
-    return;
-}
+    console.log(params);
+    if (!valid.checkParams(USER.schema, params)){
+        res.status(300).json({mns:"error al ingresar los datos"});
+        return;
+    }
 //pass valid
-if (!valid.checkPassword(params.password)){
-    res.status(300).json({mns:"el pasword debe tener mas de 6 caracteres empesar con mayuscula y tener almenos un caracter especial y un numero"});
-    return;
-}
-params.password=sha1(params.password);
+    if (!valid.checkPassword(params.password)){
+        res.status(300).json({mns:"el pasword debe tener mas de 6 caracteres empesar con mayuscula y tener almenos un caracter especial y un numero"});
+        return;
+    }
+    params.password=sha1(params.password);
 //email valid
-if (!valid.checkEmail(params.email)){
-    res.status(300).json({mns:"ingrese un email valido"});
-    return;
-}
+    if (!valid.checkEmail(params.email)){
+        res.status(300).json({mns:"ingrese un email valido"});
+        return;
+    }
 
-var users = new USER.model(params);
-var result = await users.save();
-res.status(200).json(result);
+    var users = new USER.model(params);
+    var result = await users.save();
+    res.status(200).json(result);
 });
 //creacion servicio get
 router.get("/user",midleware, (req, res) => {
@@ -56,7 +57,7 @@ router.get("/user",midleware, (req, res) => {
      res.status(200).json(docs);
     });
 });
-router.patch("/user", (req, res) => {
+router.patch("/user",midleware, (req, res) => {
     if (req.query.id == null) {
         res.status(300).json({
         msn: "no existe id"
@@ -65,18 +66,18 @@ router.patch("/user", (req, res) => {
     }
     var id = req.query.id;
     var params = req.body;
-    USER.findOneAndUpdate({_id: id}, params, (err, docs) => {
+    USER.model.findOneAndUpdate({_id: id}, params, (err, docs) => {
         res.status(200).json(docs);
     });
 });
-router.delete("/user", async(req, res) => {
+router.delete("/user",midleware,async(req, res) => {
     if (req.query.id == null) {
     res.status(300).json({
      msn: "no existe id"
     });
     return;
     }
-    var r = await USER.remove({_id: req.query.id});
+    var r = await USER.model.remove({_id: req.query.id});
     res.status(300).json(r);
     });
 
@@ -96,8 +97,8 @@ router.delete("/user", async(req, res) => {
         if(results.length==1){
             var token =JWT.sign({
                 exp:Math.floor(Date.now()/1000)+(60*60),
-                data:results.id
-            }, 'seminariolab4');
+                data:results[0].id
+            }, 'seminariosecretlab4');
             res.status(200).json({msn: "bienvenido "+body.email+" disfruta el sistema", token:token});
             return;
         }

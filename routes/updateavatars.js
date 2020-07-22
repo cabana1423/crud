@@ -4,12 +4,14 @@ var router=express.Router();
 var fileUpload = require("express-fileupload");
 var IMAGE=require("../database/updateavatar");
 const mongoose = require('../database/connect');
+var midleware=require("./midleware");
+
 
 router.use(fileUpload({
     fileSize:10*1024*1024
 }));
 
-router.post("/sendfile", (req, res)=>{
+router.post("/sendfile",midleware, (req, res)=>{
     console.log(req.files);
     var img =req.files.file;
     var path=__dirname.replace(/\/routes/g, "/img");
@@ -44,7 +46,7 @@ router.post("/sendfile", (req, res)=>{
         res.status(200).json({name: img.name});    
     });
 });
-router.get("/getfile", async(req, res, next)=>{
+router.get("/getfile", midleware,async(req, res, next)=>{
     var params=req.query;
     if(params==null){
         res.status(300).json({msn: "error es necesario una ID"});

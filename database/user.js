@@ -8,4 +8,4 @@ sex : String,
 address : String
 }
 const USERS = mongoose.model("users", USERSCHEMA);
-module.exports ={model: USERS, schema: USERSCHEMA};
+module.exports = {model: USERS, schema: USERSCHEMA};
